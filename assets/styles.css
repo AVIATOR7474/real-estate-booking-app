@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+
+* {
+    font-family: 'Tajawal', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    color: #1E88E5;
+}
+
+.booking-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-right: 5px solid #1E88E5;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.booking-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.booking-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #1E88E5;
+}
+
+.booking-info {
+    margin-bottom: 5px;
+}
+
+.booking-status-confirmed {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.booking-status-cancelled {
+    color: #F44336;
+    font-weight: bold;
+}
+
+.booking-status-rescheduled {
+    color: #FF9800;
+    font-weight: bold;
+}
+
+.calendar-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-day {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    margin: auto;
+    transition: all 0.2s ease;
+}
+
+.calendar-day-available {
+    background-color: #ccffcc;
+    color: #008000;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.calendar-day-available:hover {
+    background-color: #a3e9a3;
+    transform: scale(1.1);
+}
+
+.calendar-day-booked {
+    background-color: #ffcccc;
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.calendar-day-unavailable {
+    background-color: #f0f0f0;
+    color: #808080;
+}
+
+.calendar-day-disabled {
+    color: #cccccc;
+}
+
+.stButton button {
+    width: 100%;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.stButton button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* تنسيق للاتجاه من اليمين إلى اليسار */
+.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+/* تنسيق للشريط الجانبي */
+.sidebar .sidebar-content {
+    direction: rtl;
+}
+
+/* تنسيق للإحصائيات */
+.stat-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1E88E5;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+}
+
+/* تنسيق للرسوم البيانية */
+.chart-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
