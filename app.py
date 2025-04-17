@@ -25,7 +25,7 @@ st.set_page_config(
     page_title="Al-Hayah Appointment Booking",
     page_icon="🏢",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"  # Changed to collapsed for better mobile experience
 )
 
 # Initialize session state variables if they don't exist
@@ -66,9 +66,14 @@ def load_css():
     """Load custom CSS styles."""
     st.markdown("""
     <style>
+        /* Mobile-first approach */
+        html, body, [class*="css"] {
+            font-size: 14px;
+        }
+        
         /* Main container styling */
         .main {
-            padding: 1rem;
+            padding: 0.5rem;
         }
         
         /* Header styling */
@@ -76,7 +81,7 @@ def load_css():
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             flex-direction: column;
         }
         
@@ -84,47 +89,59 @@ def load_css():
         .logo-container {
             display: flex;
             justify-content: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
+            width: 100%;
         }
         .logo-image {
-            height: 100px;
+            max-width: 100%;
+            height: auto;
+            max-height: 80px;
         }
         
         /* Card styling */
         .card {
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
             background-color: #f8f9fa;
-            border-left: 5px solid #008080;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #008080;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         .card-title {
             color: #008080;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
+            word-break: break-word;
         }
         .card-subtitle {
             color: #daa520;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
         }
         .card-content {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+        .card-content p {
+            margin: 0.25rem 0;
         }
         .card-footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
         }
         
         /* Status badges */
         .badge {
-            padding: 0.25rem 0.5rem;
+            padding: 0.15rem 0.35rem;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
+            margin-bottom: 0.25rem;
         }
         .badge-confirmed {
             background-color: #d4edda;
@@ -142,10 +159,11 @@ def load_css():
         /* Calendar styling */
         .calendar-day {
             text-align: center;
-            padding: 1rem;
-            border-radius: 5px;
-            margin: 0.25rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.15rem;
             cursor: pointer;
+            font-size: 0.8rem;
         }
         .calendar-day-available {
             background-color: #d4edda;
@@ -162,33 +180,36 @@ def load_css():
         
         /* Success message */
         .success-message {
-            padding: 1rem;
+            padding: 0.75rem;
             background-color: #d4edda;
             color: #155724;
-            border-radius: 5px;
-            margin-bottom: 1rem;
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
         }
         
         /* Form styling */
         .form-container {
             background-color: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         /* Tabs styling */
         .stTabs [data-baseweb="tab-list"] {
-            gap: 2rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
         }
         .stTabs [data-baseweb="tab"] {
-            height: 4rem;
+            height: auto;
             white-space: pre-wrap;
             background-color: white;
             border-radius: 4px 4px 0 0;
-            gap: 1rem;
-            padding-top: 10px;
-            padding-bottom: 10px;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            min-width: auto;
         }
         .stTabs [aria-selected="true"] {
             background-color: #008080;
@@ -199,23 +220,123 @@ def load_css():
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
+            margin-top: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
         }
         .pagination-info {
             text-align: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.35rem;
             color: #6c757d;
+            font-size: 0.8rem;
         }
         
         /* Data source toggle */
         .data-source-toggle {
             display: flex;
             justify-content: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
         }
         .data-source-toggle button {
-            margin: 0 0.5rem;
+            margin: 0 0.25rem 0.25rem 0.25rem;
+            font-size: 0.8rem;
+        }
+        
+        /* Button styling for better touch targets */
+        button {
+            min-height: 44px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive headings */
+        h1 {
+            font-size: 1.5rem !important;
+            text-align: center;
+        }
+        h2 {
+            font-size: 1.3rem !important;
+        }
+        h3 {
+            font-size: 1.1rem !important;
+        }
+        
+        /* Responsive columns for mobile */
+        @media (max-width: 768px) {
+            .row-widget.stButton {
+                width: 100%;
+            }
+            
+            /* Make buttons more touch-friendly */
+            .stButton > button {
+                width: 100%;
+                height: auto;
+                padding: 0.5rem;
+                margin-bottom: 0.25rem;
+                font-size: 0.9rem;
+            }
+            
+            /* Adjust column widths for mobile */
+            [data-testid="column"] {
+                width: 100% !important;
+                flex: 1 1 100% !important;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Adjust date buttons for mobile */
+            [data-testid="stHorizontalBlock"] [data-testid="column"] {
+                min-width: 50% !important;
+                padding: 0.1rem !important;
+            }
+            
+            /* Make form inputs larger for touch */
+            input, select, textarea {
+                font-size: 16px !important; /* Prevents iOS zoom on focus */
+                padding: 0.5rem !important;
+            }
+        }
+        
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            html, body, [class*="css"] {
+                font-size: 15px;
+            }
+            
+            h1 {
+                font-size: 1.7rem !important;
+            }
+            
+            .logo-image {
+                max-height: 90px;
+            }
+        }
+        
+        /* Desktop adjustments */
+        @media (min-width: 1025px) {
+            html, body, [class*="css"] {
+                font-size: 16px;
+            }
+            
+            .main {
+                padding: 1rem;
+            }
+            
+            .logo-image {
+                height: 100px;
+            }
+            
+            .card {
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card-title {
+                font-size: 1.2rem;
+            }
+            
+            h1 {
+                font-size: 2rem !important;
+            }
         }
     </style>
     """, unsafe_allow_html=True)
@@ -227,9 +348,8 @@ def display_header():
     
     if os.path.exists(logo_path):
         logo = Image.open(logo_path)
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.image(logo, width=300)
+        # Use a single column for mobile-friendly layout
+        st.image(logo, use_container_width=True)
     else:
         # Use base64 encoded logo as fallback
         logo_base64 = get_logo_as_base64()
@@ -240,7 +360,7 @@ def display_header():
         """, unsafe_allow_html=True)
     
     st.markdown("<h1 style='text-align: center; color: #008080;'>Presentation Appointment Booking</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #daa520; font-size: 1.2rem;'>Schedule, manage, and track real estate project presentations</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #daa520; font-size: 1rem;'>Schedule, manage, and track real estate project presentations</p>", unsafe_allow_html=True)
     st.markdown("<hr>", unsafe_allow_html=True)
 
 # Generate available dates (only Saturdays and Tuesdays)
@@ -315,32 +435,19 @@ def display_calendar_view():
     # Get available dates
     available_dates = get_available_dates(num_weeks=4)
     
-    # Group dates by week for better display
-    weeks = {}
-    for date in available_dates:
-        # Get the week number
-        week_num = date.isocalendar()[1]
-        if week_num not in weeks:
-            weeks[week_num] = []
-        weeks[week_num].append(date)
+    # For mobile, display dates in a 2-column grid instead of by week
+    # This ensures better display on narrow screens
+    date_pairs = [available_dates[i:i+2] for i in range(0, len(available_dates), 2)]
     
-    # Display weeks
-    for week_num, dates in weeks.items():
-        cols = st.columns(len(dates))
-        for i, date in enumerate(dates):
+    # Display dates in pairs
+    for date_pair in date_pairs:
+        cols = st.columns(len(date_pair))
+        for i, date in enumerate(date_pair):
             # Check if the date is available
             is_available = is_date_available(date)
             
             # Check if this is the selected date
             is_selected = st.session_state.selected_date == date
-            
-            # Determine the CSS class
-            if is_selected:
-                css_class = "calendar-day calendar-day-selected"
-            elif is_available:
-                css_class = "calendar-day calendar-day-available"
-            else:
-                css_class = "calendar-day calendar-day-unavailable"
             
             # Display the date
             with cols[i]:
@@ -348,7 +455,7 @@ def display_calendar_view():
                 day_num = date.strftime("%d")
                 month = date.strftime("%b")
                 
-                # Create a clickable date card
+                # Create a clickable date card with simplified text for mobile
                 if st.button(
                     f"{day_name}\n{day_num} {month}",
                     key=f"date_{date}",
@@ -438,7 +545,7 @@ def display_appointment_card(appointment, index):
     else:  # Rescheduled
         badge_class = "badge badge-rescheduled"
     
-    # Create the card
+    # Create the card with a more mobile-friendly layout
     st.markdown(f"""
     <div class="card">
         <div class="card-title">{appointment['Company Name']} - {appointment['Project Name']}</div>
@@ -450,33 +557,33 @@ def display_appointment_card(appointment, index):
         </div>
         <div class="card-footer">
             <span class="{badge_class}">{status}</span>
-            <div>
-                <button onclick="document.getElementById('edit_{index}').click()">Edit</button>
-                <button onclick="document.getElementById('cancel_{index}').click()">Cancel</button>
-            </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Hidden buttons for edit and cancel actions
-    if st.button("Edit", key=f"edit_{index}", help="Edit this appointment", type="primary", use_container_width=True):
-        st.session_state.edit_appointment_id = appointment['ID']
-        st.session_state.view = 'edit'
-        st.rerun()
+    # Use columns for buttons to make them more mobile-friendly
+    col1, col2 = st.columns(2)
     
-    if st.button("Cancel", key=f"cancel_{index}", help="Cancel this appointment", type="secondary", use_container_width=True):
-        # Cancel the appointment
-        success = sheets.cancel_appointment(appointment['ID'])
-        
-        if success:
-            # Show success message
-            st.session_state.show_success = True
-            st.session_state.success_message = f"Appointment cancelled successfully."
-            
-            # Rerun the app to update the UI
+    with col1:
+        if st.button("Edit", key=f"edit_{index}", help="Edit this appointment", type="primary", use_container_width=True):
+            st.session_state.edit_appointment_id = appointment['ID']
+            st.session_state.view = 'edit'
             st.rerun()
-        else:
-            st.error("Failed to cancel appointment. Please try again.")
+    
+    with col2:
+        if st.button("Cancel", key=f"cancel_{index}", help="Cancel this appointment", type="secondary", use_container_width=True):
+            # Cancel the appointment
+            success = sheets.cancel_appointment(appointment['ID'])
+            
+            if success:
+                # Show success message
+                st.session_state.show_success = True
+                st.session_state.success_message = f"Appointment cancelled successfully."
+                
+                # Rerun the app to update the UI
+                st.rerun()
+            else:
+                st.error("Failed to cancel appointment. Please try again.")
 
 # Display pagination controls
 def display_pagination_controls(total_pages):
@@ -496,26 +603,28 @@ def display_pagination_controls(total_pages):
     </div>
     """, unsafe_allow_html=True)
     
-    # Create columns for pagination buttons
-    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+    # Create columns for pagination buttons - 2x2 grid for mobile
+    col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("⏮️ First", key="first_page", disabled=st.session_state.current_page == 1):
+        if st.button("⏮️ First", key="first_page", disabled=st.session_state.current_page == 1, use_container_width=True):
             st.session_state.current_page = 1
             st.rerun()
     
     with col2:
-        if st.button("◀️ Previous", key="prev_page", disabled=st.session_state.current_page == 1):
+        if st.button("◀️ Previous", key="prev_page", disabled=st.session_state.current_page == 1, use_container_width=True):
             st.session_state.current_page = max(1, st.session_state.current_page - 1)
             st.rerun()
     
+    col3, col4 = st.columns(2)
+    
     with col3:
-        if st.button("Next ▶️", key="next_page", disabled=st.session_state.current_page == total_pages):
+        if st.button("Next ▶️", key="next_page", disabled=st.session_state.current_page == total_pages, use_container_width=True):
             st.session_state.current_page = min(total_pages, st.session_state.current_page + 1)
             st.rerun()
     
     with col4:
-        if st.button("Last ⏭️", key="last_page", disabled=st.session_state.current_page == total_pages):
+        if st.button("Last ⏭️", key="last_page", disabled=st.session_state.current_page == total_pages, use_container_width=True):
             st.session_state.current_page = total_pages
             st.rerun()
 
@@ -547,14 +656,18 @@ def display_data_source_toggle():
             st.session_state.current_page = 1  # Reset to first page
             st.rerun()
     
-    if st.session_state.data_source == 'sheet':
-        st.info("📊 Displaying data imported directly from Google Sheets. Any changes made in the sheet will be reflected here.")
-    else:
-        st.info("📱 Displaying data entered through this app.")
+    # Use a container with padding for the info message
+    info_container = st.container()
+    
+    with info_container:
+        if st.session_state.data_source == 'sheet':
+            st.info("📊 Displaying data imported directly from Google Sheets.")
+        else:
+            st.info("📱 Displaying data entered through this app.")
     
     # Add refresh button for sheet data
     if st.session_state.data_source == 'sheet':
-        if st.button("🔄 Refresh Data", key="refresh_btn", help="Refresh data from Google Sheets"):
+        if st.button("🔄 Refresh Data", key="refresh_btn", help="Refresh data from Google Sheets", use_container_width=True):
             st.session_state.show_success = True
             st.session_state.success_message = "Data refreshed from Google Sheets."
             st.rerun()
@@ -577,10 +690,11 @@ def display_appointments_paginated():
         st.info("No appointments found.")
         return
     
-    # Display tabs for different status groups
-    tab1, tab2, tab3, tab4 = st.tabs(["All", "Confirmed", "Rescheduled", "Cancelled"])
+    # Use a more compact tab display for mobile
+    tab_labels = ["All", "Confirmed", "Rescheduled", "Cancelled"]
+    tabs = st.tabs(tab_labels)
     
-    with tab1:
+    with tabs[0]:
         # Get paginated appointments for All status
         st.session_state.current_status_filter = None
         appointments_df, total_pages = sheets.get_paginated_appointments(
@@ -602,7 +716,7 @@ def display_appointments_paginated():
         else:
             st.info("No appointments found.")
     
-    with tab2:
+    with tabs[1]:
         # Get paginated appointments for Confirmed status
         if st.session_state.current_status_filter != 'Confirmed':
             st.session_state.current_status_filter = 'Confirmed'
@@ -627,7 +741,7 @@ def display_appointments_paginated():
         else:
             st.info("No confirmed appointments found.")
     
-    with tab3:
+    with tabs[2]:
         # Get paginated appointments for Rescheduled status
         if st.session_state.current_status_filter != 'Rescheduled':
             st.session_state.current_status_filter = 'Rescheduled'
@@ -652,7 +766,7 @@ def display_appointments_paginated():
         else:
             st.info("No rescheduled appointments found.")
     
-    with tab4:
+    with tabs[3]:
         # Get paginated appointments for Cancelled status
         if st.session_state.current_status_filter != 'Cancelled':
             st.session_state.current_status_filter = 'Cancelled'
@@ -763,7 +877,7 @@ def display_edit_form():
                             st.error("Failed to update appointment. Please try again.")
             
             # Cancel button
-            if st.button("Cancel", key="cancel_edit", help="Cancel editing", type="secondary"):
+            if st.button("Cancel", key="cancel_edit", help="Cancel editing", type="secondary", use_container_width=True):
                 # Reset the edit appointment ID
                 st.session_state.edit_appointment_id = None
                 
